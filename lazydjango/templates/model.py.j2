@@ -1,0 +1,40 @@
+class {{ model_name }}(models.Model):
+{% for field in fields %}
+{% if field.field_type == 'ForeignKey' %}
+    {{ field.name }} = models.ForeignKey(
+        {%- if field.related_model %}'{{ field.related_model }}',{% else %}'self',{% endif -%}
+        on_delete=models.{{ field.on_delete|default('CASCADE') }}{% if not field.required or field.blank or field.related_name %},{% endif %}
+        {%- if not field.required %}null=True,{% endif %}
+        {%- if field.blank %}blank=True,{% endif %}
+        {%- if field.related_name %}related_name='{{ field.related_name }}'{% endif -%}
+    )
+{% elif field.field_type == 'OneToOneField' %}
+    {{ field.name }} = models.OneToOneField(
+        {%- if field.related_model %}'{{ field.related_model }}',{% else %}'self',{% endif -%}
+        on_delete=models.{{ field.on_delete|default('CASCADE') }}{% if not field.required or field.blank or field.related_name %},{% endif %}
+        {%- if not field.required %}null=True,{% endif %}
+        {%- if field.blank %}blank=True,{% endif %}
+        {%- if field.related_name %}related_name='{{ field.related_name }}'{% endif -%}
+    )
+{% elif field.field_type == 'ManyToManyField' %}
+    {{ field.name }} = models.ManyToManyField(
+        {%- if field.related_model %}'{{ field.related_model }}'{% endif -%}
+        {%- if field.related_name %}, related_name='{{ field.related_name }}'{% endif -%}
+    )
+{% else %}
+    {{ field.name }} = models.{{ field.field_type }}(
+        {%- if field.max_length %}max_length={{ field.max_length }},{% endif %}
+        {%- if field.default and field.default != 'None' %}default='{{ field.default }}',{% endif %}
+        {%- if not field.required and field.field_type not in ['BooleanField'] %}null=True,{% endif %}
+        {%- if field.blank %}blank=True,{% endif %}
+        {%- if field.unique %}unique=True{% endif -%}
+    )
+{% endif %}
+{% endfor %}
+
+    class Meta:
+        verbose_name = '{{ model_name }}'
+        verbose_name_plural = '{{ model_name }}s'
+
+    def __str__(self):
+        return str(self.{{ fields[0].name if fields else 'pk' }})

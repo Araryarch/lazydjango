@@ -1,0 +1,250 @@
+{
+  "version": "1.0.0",
+  "name": "LazyDjango API",
+  "description": "Auto-generate Django code via REST API",
+  "type": "collection",
+  "items": [
+    {
+      "name": "01-Health",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Health Check",
+          "type": "http",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:6767/api/health/",
+            "name": "Health Check"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02-Project",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Get Project Info",
+          "type": "http",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:6767/api/project/",
+            "params": {
+              "project_path": "."
+            },
+            "name": "Get Project Info"
+          }
+        },
+        {
+          "name": "List Apps",
+          "type": "http",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:6767/api/project/apps/",
+            "params": {
+              "project_path": "."
+            },
+            "name": "List Apps"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03-Apps",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Create App",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/apps/create/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"name\": \"myapp\",\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Create App"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04-Models",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Create Model",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/models/create/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"app_name\": \"myapp\",\n  \"model_name\": \"Product\",\n  \"fields\": [\n    {\n      \"name\": \"name\",\n      \"field_type\": \"CharField\",\n      \"required\": true,\n      \"unique\": false,\n      \"max_length\": 255\n    },\n    {\n      \"name\": \"price\",\n      \"field_type\": \"DecimalField\",\n      \"required\": true,\n      \"unique\": false\n    },\n    {\n      \"name\": \"description\",\n      \"field_type\": \"TextField\",\n      \"required\": false,\n      \"unique\": false\n    }\n  ],\n  \"migrate\": false,\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Create Model"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05-Views",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Create Views",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/views/create/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"app_name\": \"myapp\",\n  \"model_name\": \"Product\",\n  \"view_type\": \"template\",\n  \"operations\": {\n    \"create\": true,\n    \"list\": true,\n    \"detail\": true,\n    \"update\": true,\n    \"delete\": true\n  },\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Create Views"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06-Admin",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Create Admin",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/admin/create/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"app_name\": \"myapp\",\n  \"model_name\": \"Product\",\n  \"admin_theme\": \"none\",\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Create Admin"
+          }
+        }
+      ]
+    },
+    {
+      "name": "07-Forms",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Create Forms",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/forms/create/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"app_name\": \"myapp\",\n  \"model_name\": \"Product\",\n  \"gen_type\": \"both\",\n  \"style\": \"bootstrap\",\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Create Forms"
+          }
+        }
+      ]
+    },
+    {
+      "name": "08-Auth",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Setup Auth",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/auth/setup/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"app_name\": \"users\",\n  \"access_token_lifetime\": 60,\n  \"refresh_token_lifetime\": 7,\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Setup Auth"
+          }
+        }
+      ]
+    },
+    {
+      "name": "09-Static",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Setup Static",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/static/setup/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"framework\": \"tailwind\",\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Setup Static"
+          }
+        }
+      ]
+    },
+    {
+      "name": "10-Middleware",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Create Middleware",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/middleware/create/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"middleware_name\": \"LoggingMiddleware\",\n  \"middleware_type\": \"logging\",\n  \"custom_code\": \"\",\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Create Middleware"
+          }
+        }
+      ]
+    },
+    {
+      "name": "11-Server",
+      "type": "folder",
+      "items": [
+        {
+          "name": "Start Server",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/server/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"command\": \"start\",\n  \"host\": \"0.0.0.0\",\n  \"port\": 8000,\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Start Server"
+          }
+        },
+        {
+          "name": "Run Migrations",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/server/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"command\": \"migrate\",\n  \"app\": \"myapp\",\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Run Migrations"
+          }
+        },
+        {
+          "name": "Check Project",
+          "type": "http",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:6767/api/server/",
+            "body": {
+              "type": "json",
+              "raw": "{\n  \"command\": \"check\",\n  \"project_path\": \".\"\n}"
+            },
+            "name": "Check Project"
+          }
+        }
+      ]
+    }
+  ]
+}

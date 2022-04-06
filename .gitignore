@@ -1,0 +1,114 @@
+# =============================================================================
+# LazyDjango - Python Package
+# =============================================================================
+
+# === Python ===
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# C extensions
+*.c
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.pytest_cache/
+.ruff_cache/
+
+# === Virtual Environments ===
+.venv/
+venv/
+ENV/
+env/
+.env
+.venv
+
+# === IDE ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# === Django (for generated projects) ===
+*.log
+*.pot
+*.mo
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+static/
+migrations/
+
+# === Package Build ===
+lazydjango.egg-info/
+
+# === Project Specific ===
+# Test projects (these should NOT be in the repo)
+*_test/
+testproject/
+fresh_*/
+proper_test/
+complete_test/
+
+# Development databases
+*.db
+*.sqlite3
+
+# Local environment
+.env.local
+.env.*.local
+
+# === OS ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.ui/
+
+# === UV (Python package manager) ===
+uv.lock
+
+# === Keep these (package assets) ===
+!lazydjango/ui/out/
+!lazydjango/ui/out/**/*
+!lazydjango/bruno/
+!lazydjango/templates/
+
+# === UI Build Artifacts (don't track) ===
+ui/.next/
+ui/node_modules/

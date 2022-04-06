@@ -1,0 +1,154 @@
+{% if operations.get('list') %}
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from .models import {{ model_name }}
+import json
+
+
+@csrf_exempt
+def {{ model_name_lower }}_list(request):
+    if request.method == 'GET':
+        items = {{ model_name }}.objects.all()
+        data = [
+            {
+                {% for field in fields %}
+                '{{ field.name }}': getattr(p, '{{ field.name }}', None){% if field.field_type in ['DateField', 'DateTimeField'] %}.isoformat() if getattr(p, '{{ field.name }}', None) else None{% endif %}{% if not loop.last %},
+                {% endif %}
+                {% endfor %}
+            }
+            for p in items
+        ]
+        return JsonResponse({
+            'success': 200,
+            'message': 'success get list {{ model_name }}',
+            'data': data
+        })
+
+{% endif %}
+{% if operations.get('create') %}
+@csrf_exempt
+@require_http_methods(["POST"])
+def {{ model_name_lower }}_create(request):
+    try:
+        data = json.loads(request.body)
+        {% for field in fields %}
+        {% if field.name != 'id' %}
+        {% if field.field_type in ['DateField', 'DateTimeField'] %}
+        {{ field.name }}_val = timezone.now() if data.get('{{ field.name }}') in [None, ''] else data.get('{{ field.name }}')
+        {% elif field.field_type == 'BooleanField' %}
+        {{ field.name }}_val = data.get('{{ field.name }}', False)
+        {% elif field.field_type in ['IntegerField', 'FloatField'] %}
+        {{ field.name }}_val = data.get('{{ field.name }}', 0)
+        {% else %}
+        {{ field.name }}_val = data.get('{{ field.name }}', '')
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        obj = {{ model_name }}.objects.create(
+            {% for field in fields %}
+            {% if field.name != 'id' %}
+            {{ field.name }}={{ field.name }}_val{% if not loop.last %},
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        )
+        return JsonResponse({
+            'success': 201,
+            'message': 'success create {{ model_name }}',
+            'data': {
+                {% for field in fields %}
+                '{{ field.name }}': getattr(obj, '{{ field.name }}', None){% if field.field_type in ['DateField', 'DateTimeField'] %}.isoformat() if getattr(obj, '{{ field.name }}', None) else None{% endif %}{% if not loop.last %},
+                {% endif %}
+                {% endfor %}
+            }
+        }, status=201)
+    except Exception as e:
+        return JsonResponse({
+            'success': 400,
+            'message': f'failed create {{ model_name }}: {str(e)}',
+            'data': None
+        }, status=400)
+
+{% endif %}
+{% if operations.get('detail') %}
+@csrf_exempt
+def {{ model_name_lower }}_detail(request, pk):
+    try:
+        obj = {{ model_name }}.objects.get(pk=pk)
+        return JsonResponse({
+            'success': 200,
+            'message': 'success get {{ model_name }}',
+            'data': {
+                {% for field in fields %}
+                '{{ field.name }}': getattr(obj, '{{ field.name }}', None){% if field.field_type in ['DateField', 'DateTimeField'] %}.isoformat() if getattr(obj, '{{ field.name }}', None) else None{% endif %}{% if not loop.last %},
+                {% endif %}
+                {% endfor %}
+            }
+        })
+    except {{ model_name }}.DoesNotExist:
+        return JsonResponse({
+            'success': 404,
+            'message': '{{ model_name }} not found',
+            'data': None
+        }, status=404)
+
+{% endif %}
+{% if operations.get('update') %}
+@csrf_exempt
+@require_http_methods(["PUT", "PATCH"])
+def {{ model_name_lower }}_update(request, pk):
+    try:
+        obj = {{ model_name }}.objects.get(pk=pk)
+        data = json.loads(request.body)
+        {% for field in fields %}
+        {% if field.name != 'id' and field.name != 'created_at' %}
+        if '{{ field.name }}' in data:
+            obj.{{ field.name }} = data['{{ field.name }}']
+        {% endif %}
+        {% endfor %}
+        obj.save()
+        return JsonResponse({
+            'success': 200,
+            'message': 'success update {{ model_name }}',
+            'data': {
+                {% for field in fields %}
+                '{{ field.name }}': getattr(obj, '{{ field.name }}', None){% if field.field_type in ['DateField', 'DateTimeField'] %}.isoformat() if getattr(obj, '{{ field.name }}', None) else None{% endif %}{% if not loop.last %},
+                {% endif %}
+                {% endfor %}
+            }
+        })
+    except {{ model_name }}.DoesNotExist:
+        return JsonResponse({
+            'success': 404,
+            'message': '{{ model_name }} not found',
+            'data': None
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': 400,
+            'message': f'failed update {{ model_name }}: {str(e)}',
+            'data': None
+        }, status=400)
+
+{% endif %}
+{% if operations.get('delete') %}
+@csrf_exempt
+@require_http_methods(["DELETE"])
+def {{ model_name_lower }}_delete(request, pk):
+    try:
+        obj = {{ model_name }}.objects.get(pk=pk)
+        obj.delete()
+        return JsonResponse({
+            'success': 200,
+            'message': 'success delete {{ model_name }}',
+            'data': None
+        })
+    except {{ model_name }}.DoesNotExist:
+        return JsonResponse({
+            'success': 404,
+            'message': '{{ model_name }} not found',
+            'data': None
+        }, status=404)
+{% endif %}

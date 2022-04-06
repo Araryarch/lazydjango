@@ -1,0 +1,100 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lazydjango"
+version = "1.0.0"
+description = "Auto-generate Django code via CLI/API - Models, Views, Admin, Forms, Auth, Middleware, Static"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Araryarch", email = "araryarch@email.com"}
+]
+keywords = ["django", "cli", "api", "code-generator", "automation", "scaffold"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Environment :: Console :: Curses",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "jinja2>=3.1.0",
+    "click>=8.1.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "pydantic>=2.0.0",
+    "django>=4.2",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-asyncio>=0.21",
+    "ruff>=0.1.0",
+    "black>=23.0",
+    "httpx>=0.25.0",
+]
+ui = [
+    "uvicorn>=0.23.0",
+]
+all = [
+    "lazydjango[dev,ui]",
+]
+
+[project.urls]
+Homepage = "https://github.com/Araryarch/lazydjango"
+Documentation = "https://github.com/Araryarch/lazydjango#readme"
+Repository = "https://github.com/Araryarch/lazydjango"
+Issues = "https://github.com/Araryarch/lazydjango/issues"
+Changelog = "https://github.com/Araryarch/lazydjango/blob/main/CHANGELOG.md"
+
+[project.scripts]
+lazydjango = "lazydjango.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lazydjango*"]
+exclude = ["tests*", "scripts*"]
+
+[tool.setuptools.package-data]
+lazydjango = [
+    "templates/*.j2",
+    "bruno/**/*",
+    "ui/out/**/*",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+fix = true
+show-fixes = true
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short"

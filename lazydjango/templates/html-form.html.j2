@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ model_name }} Form</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        input, textarea, select { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #0066cc; color: white; padding: 0.75rem 1.5rem; border: none; cursor: pointer; margin-right: 0.5rem; }
+        .error { color: #dc3545; margin-top: 0.25rem; font-size: 0.875rem; }
+        a { margin-left: 0.5rem; }
+    </style>
+</head>
+<body>
+    <h1>{{ model_name }} Form</h1>
+    
+    <form method="post">
+        <div class="form-group">
+            <label for="id_name">Name</label>
+            <input type="text" name="name" id="id_name">
+        </div>
+        
+        <div style="margin-top: 1.5rem;">
+            <button type="submit">Submit</button>
+            <a href="#">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>

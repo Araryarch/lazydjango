@@ -1,0 +1,99 @@
+{% if operations.list %}@api_view(['GET'])
+@renderer_classes([JSONRenderer])
+def {{ model_name_lower }}_list(request):
+    {{ model_name_lower }}_qs = {{ model_name }}.objects.all()
+    data = []
+    for obj in {{ model_name_lower }}_qs:
+        item = {}
+        {% for field in fields %}
+        item['{{ field.name }}'] = getattr(obj, '{{ field.name }}', None)
+        {% endfor %}
+        data.append(item)
+    return Response({
+        "success": 200,
+        "messages": "success get list {{ model_name }}",
+        "data": data
+    })
+
+
+{% endif %}{% if operations.create %}@api_view(['POST'])
+@renderer_classes([JSONRenderer])
+def {{ model_name_lower }}_create(request):
+    serializer = {{ model_name }}Serializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            "success": 201,
+            "messages": "success create {{ model_name }}",
+            "data": serializer.data
+        }, status=status.HTTP_201_CREATED)
+    return Response({
+        "success": 400,
+        "messages": "failed create {{ model_name }}",
+        "data": serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
+
+
+{% endif %}{% if operations.detail %}@api_view(['GET'])
+@renderer_classes([JSONRenderer])
+def {{ model_name_lower }}_detail(request, pk):
+    try:
+        {{ model_name_lower }}_obj = {{ model_name }}.objects.get(pk=pk)
+    except {{ model_name }}.DoesNotExist:
+        return Response({
+            "success": 404,
+            "messages": "{{ model_name }} not found",
+            "data": None
+        }, status=status.HTTP_404_NOT_FOUND)
+    serializer = {{ model_name }}Serializer({{ model_name_lower }}_obj)
+    return Response({
+        "success": 200,
+        "messages": "success get {{ model_name }}",
+        "data": serializer.data
+    })
+
+
+{% endif %}{% if operations.update %}@api_view(['PUT', 'PATCH'])
+@renderer_classes([JSONRenderer])
+def {{ model_name_lower }}_update(request, pk):
+    try:
+        {{ model_name_lower }}_obj = {{ model_name }}.objects.get(pk=pk)
+    except {{ model_name }}.DoesNotExist:
+        return Response({
+            "success": 404,
+            "messages": "{{ model_name }} not found",
+            "data": None
+        }, status=status.HTTP_404_NOT_FOUND)
+    serializer = {{ model_name }}Serializer({{ model_name_lower }}_obj, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            "success": 200,
+            "messages": "success update {{ model_name }}",
+            "data": serializer.data
+        })
+    return Response({
+        "success": 400,
+        "messages": "failed update {{ model_name }}",
+        "data": serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
+
+
+{% endif %}{% if operations.delete %}@api_view(['DELETE'])
+@renderer_classes([JSONRenderer])
+def {{ model_name_lower }}_delete(request, pk):
+    try:
+        {{ model_name_lower }}_obj = {{ model_name }}.objects.get(pk=pk)
+    except {{ model_name }}.DoesNotExist:
+        return Response({
+            "success": 404,
+            "messages": "{{ model_name }} not found",
+            "data": None
+        }, status=status.HTTP_404_NOT_FOUND)
+    {{ model_name_lower }}_obj.delete()
+    return Response({
+        "success": 200,
+        "messages": "success delete {{ model_name }}",
+        "data": None
+    }, status=status.HTTP_204_NO_CONTENT)
+{% endif %}

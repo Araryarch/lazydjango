@@ -1,0 +1,13 @@
+"""Admin template."""
+
+from django.contrib import admin
+from .models import {{ model_name }}
+
+
+@admin.register({{ model_name }})
+class {{ model_name }}Admin(admin.ModelAdmin):
+{% if options.list_display %}    list_display = [{% for f in fields %}'{{ f }}', {% endfor %}]{% endif %}
+{% if options.search_fields %}    search_fields = [{% for f in fields[:3] %}'{{ f }}', {% endfor %}]{% endif %}
+{% if options.list_filter %}    list_filter = [{% for f in fields[:3] %}'{{ f }}', {% endfor %}]{% endif %}
+{% if options.readonly_fields %}    readonly_fields = [{% for f in fields[:3] %}'{{ f }}', {% endfor %}]{% endif %}
+{% if options.ordering %}    ordering = ['-id']{% endif %}

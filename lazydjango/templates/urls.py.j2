@@ -1,0 +1,6 @@
+{% if operations.get('list') %}    path('{{ model_name_lower }}/', views.{{ model_name_lower }}_list, name='{{ model_name_lower }}-list'),
+{% endif %}{% if operations.get('create') %}    path('{{ model_name_lower }}/create/', views.{{ model_name_lower }}_create, name='{{ model_name_lower }}-create'),
+{% endif %}{% if operations.get('detail') %}    path('{{ model_name_lower }}/<int:pk>/', views.{{ model_name_lower }}_detail, name='{{ model_name_lower }}-detail'),
+{% endif %}{% if operations.get('update') %}    path('{{ model_name_lower }}/<int:pk>/update/', views.{{ model_name_lower }}_update, name='{{ model_name_lower }}-update'),
+{% endif %}{% if operations.get('delete') %}    path('{{ model_name_lower }}/<int:pk>/delete/', views.{{ model_name_lower }}_delete, name='{{ model_name_lower }}-delete'),
+{% endif %}
