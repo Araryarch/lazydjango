@@ -1,6 +1,6 @@
 # lazydjango
 
-[![Cross-Platform Tests](https://github.com/Araryarch/lazydjango/workflows/Cross-Platform%20Tests/badge.svg)](https://github.com/Araryarch/lazydjango/actions)
+[![Tests](https://github.com/Araryarch/lazydjango/workflows/Tests/badge.svg)](https://github.com/Araryarch/lazydjango/actions)
 [![PyPI Version](https://img.shields.io/pypi/v/lazydjango.svg)](https://pypi.org/project/lazydjango/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
